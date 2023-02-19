@@ -10,7 +10,13 @@
             {{-- Hiển thị phần nội dung bên cạnh cái logo --}}
             <div class="col-md-9 my-auto">
                 <div class="border text-center p-2">
-                    <h5>Content Here</h5>
+                    <form action="/search-post" method="get">
+                        <div class="input-group">
+                            <input type="search" class="form-control rounded" placeholder="Search"
+                                name="search_string" />
+                            <button type="submit" class="btn btn-outline-primary">search</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -21,6 +27,12 @@
 <div class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-white bg-green">
         <div class="container">
+            @php
+                // Lấy tất cả dữ liệu của categories trong hệ thống
+                $categories = \App\Models\Category::where('navbar_status', '0')
+                    ->where('status', '0')
+                    ->get();
+            @endphp
 
             {{-- <a href="" class="navbar-brand d-inline d-sm-inline d-md-none">Navbar</a> --}}
 
@@ -38,39 +50,48 @@
                         <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
                     </li>
 
-                    {{-- <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
+                            Category list
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <a class="dropdown-item"
+                                        href="{{ url('tutorial/' . $category->slug) }}">{{ $category->name }}</a>
+                                </li>
+                            @endforeach
                         </ul>
-                    </li> --}}
+                    </li>
 
-                    @php
-                        // Lấy tất cả dữ liệu của categories trong hệ thống
-                        $categories = \App\Models\Category::where('navbar_status', '0')
-                            ->where('status', '0')
-                            ->get();
-                    @endphp
-
-                    {{-- Đưa tất cả các categories để hiển thị ra trên thanh nav bar ở trang home --}}
-
-                    @foreach ($categories as $category)
-                        <li class="nav-item">
-                            <a class="nav-link"
-                                href="{{ url('tutorial/' . $category->slug) }}">{{ $category->name }}</a>
-                        </li>
-                    @endforeach
+                    {{-- For questions list --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Questions list
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item"
+                                    href="/questions">All</a>
+                            </li>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <a class="dropdown-item"
+                                        href="{{ url('questions/' . $category->slug) }}">{{ $category->name }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
 
 
                     @if (Auth::check())
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('questions/my-questions') }}">My questions</a>
+                        </li>
+
                         <li>
                             <a class="nav-link btn-danger" href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
@@ -80,6 +101,7 @@
                             </form>
 
                         </li>
+
 
                         @if (Auth::user()->role_as == '1')
                             <li>

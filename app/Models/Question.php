@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Question extends Model
 {
     use HasFactory;
-    protected $table = 'posts';
+    protected $table = 'questions';
     protected $fillable = [
-        'category_id', 'name', 'slug', 'description', 'cover', 'meta_title', 'meta_description', 'meta_keyword', 'status', 'created_by'
+        'category_id', 'title', 'slug', 'description', 'created_by'
     ];
 
     public function category()
@@ -23,13 +23,8 @@ class Post extends Model
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
 
-    public function comments()
+    public function answers()
     {
-        return $this->hasMany(Comment::class, 'post_id', 'id');
-    }
-
-    public function likes()
-    {
-        return $this->hasMany(Like::class, 'post_id', 'id');
+        return $this->hasMany(Answer::class, 'question_id', 'id');
     }
 }

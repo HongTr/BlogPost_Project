@@ -8,8 +8,9 @@
     <div class="py-4">
         <div class="container">
             <div class="row">
+
                     <div class="category-heading">
-                        <h2>Posts about {{ $category }}</h2>
+                        <h2>Posts about {{ $category}}</h2>
                     </div>
 
                     @forelse ($posts as $post)
@@ -37,13 +38,6 @@
                             </div>
                         </div>
                     @endforelse
-
-                    {{-- For pagination --}}
-                    <div class="your-paginate mt-3">
-                        {{ $posts->links() }}
-                    </div>
-
-                </div>
             </div>
         </div>
     </div>

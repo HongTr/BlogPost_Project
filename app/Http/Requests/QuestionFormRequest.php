@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostFormRequest extends FormRequest
+class QuestionFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,9 @@ class PostFormRequest extends FormRequest
     {
         return [
             'category_id' => 'required|integer',
-            'name' => 'required|string',
+            'title' => 'required|string',
             'slug' => 'required|string',
             'description' => 'required',
-            // 'yt_iframe' => 'nullable|string',
-            'cover' => ['nullable', 'image'],
-            'meta_title' => 'required|string',
-            'meta_description' => 'nullable|string',
-            'meta_keyword' => 'nullable|string',
-            'status' => 'nullable',
         ];
     }
 }
